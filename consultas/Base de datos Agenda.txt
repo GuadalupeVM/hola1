@@ -24,7 +24,7 @@ CREATE TABLE encargado(
 );
 
 CREATE UNIQUE INDEX idex_email_encargado ON encargado(email);
-
+kkkkkk
 
 CREATE TABLE alumnos(
     matricula integer PRIMARY KEY AUTOINCREMENT,
