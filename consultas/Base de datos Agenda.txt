@@ -1,0 +1,74 @@
+CREATE TABLE docente(
+    matricula integer PRIMARY KEY AUTOINCREMENT,
+    email varchar (80),
+    password varchar(32)  NOT NULL,
+    nombre varchar(50)  NOT NULL,
+    apellido_p varchar(50) NOT NULL,
+    apellido_m varchar(50)
+);
+
+CREATE UNIQUE INDEX idex_email_docente ON docente(email);
+
+
+CREATE TABLE encargado(
+    matricula integer PRIMARY KEY AUTOINCREMENT,
+    email varchar (80),
+    password varchar(32)  NOT NULL,
+    nombre varchar(50)  NOT NULL,
+    apellido_p varchar(50) NOT NULL,
+    apellido_m varchar(50),
+    status varchar(50) check (status IN ('activo', 'inactivo')) NOT NULL,
+    rol varcahr(50) check ( rol IN ('encargado_lab', 'personal_acdemia')) NOT NULL
+
+
+);
+
+CREATE UNIQUE INDEX idex_email_encargado ON encargado(email);
+
+
+CREATE TABLE alumnos(
+    matricula integer PRIMARY KEY AUTOINCREMENT,
+    email varchar (80),
+    password varchar(32)  NOT NULL,
+    nombre varchar(50)  NOT NULL,
+    apellido_p varchar(50) NOT NULL,
+    apellido_m varchar(50),
+    cuatrimestre int check (cuatrimestre IN (1,2,3,4,5,6,7,8,9,10,11)) NOT NULL,
+    grupo varchar(50) NOT NULL,
+    status varchar(50) check (status IN ('activo', 'inactivo')) NOT NULL,
+    horas_realizadas int,
+    docente integer references docente(matricula) 
+    
+
+);
+
+CREATE UNIQUE INDEX idex_email_alumnos ON alumnos(email);
+
+CREATE TABLE reservas(
+    id_reserva integer PRIMARY KEY AUTOINCREMENT,
+    hora time NOT NULL,
+    fecha date  NOT NULL,
+    hablidad_a_trabajar varchar(50) check (hablidad_a_trabajar IN ('grammar', 'listening', 'reading', 'writing'))  NOT NULL,
+    alumno integer references alumnos(matricula),
+    encargado integr references encargado(matricula)
+);
+
+CREATE TABLE documentos(
+    id_doc integer PRIMARY KEY AUTOINCREMENT,
+    periodo varchar(50) not null,
+    fecha date  NOT NULL,
+    tipo varchar(50) check (tipo IN ('reporte de alumnos', 'estadistico'))  NOT NULL,
+    encargado integr references encargado(matricula)
+    
+);
+
+CREATE TABLE avisos(
+    id_aviso integer PRIMARY KEY AUTOINCREMENT,
+    fecha date  NOT NULL,
+    asunto varchar(50) check (asunto in ('aviso profesor', 'aviso laboratorio', 'aviso general')) NOT NULL, 
+    emisor varcahr(50) check (emisor in ('docente', 'encargado')) NOT NULL,
+    encargado integr references encargado(matricula),
+    docente integer references docente(matricula)
+    
+);
+
